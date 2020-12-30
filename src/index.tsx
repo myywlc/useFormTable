@@ -22,7 +22,7 @@ export interface Store {
   [name: string]: any;
 }
 
-type Antd3ValidateFields = (fieldNames: string[], callback: (errors, values) => void) => void;
+type Antd3ValidateFields = (fieldNames: string[], callback: (errors: any, values: any) => void) => void;
 type Antd4ValidateFields = (fieldNames?: string[]) => Promise<any>;
 
 export interface UseAntdTableFormUtils {
@@ -49,7 +49,7 @@ export interface BaseOptions<U> extends Omit<BasePaginatedOptions<U>, 'paginated
 }
 
 export interface OptionsWithFormat<R, Item, U>
-extends Omit<PaginatedOptionsWithFormat<R, Item, U>, 'paginated'> {
+  extends Omit<PaginatedOptionsWithFormat<R, Item, U>, 'paginated'> {
   form?: UseAntdTableFormUtils;
   defaultType?: 'simple' | 'advance';
 }
@@ -181,41 +181,41 @@ function useAntdTable<R = any, Item = any, U extends Item = any>(
 
   const _submit = useCallback(
     (initParams?: any) => {
-    setTimeout(() => {
-      validateFields()
-        .then(() => {
-          const activeFormData = getActivetFieldValues();
-          // 记录全量数据
-          const _allFormData = { ...allFormData, ...activeFormData };
-          setAllFormData(_allFormData);
+      setTimeout(() => {
+        validateFields()
+          .then(() => {
+            const activeFormData = getActivetFieldValues();
+            // 记录全量数据
+            const _allFormData = { ...allFormData, ...activeFormData };
+            setAllFormData(_allFormData);
 
-          // has defaultParams
-          if (initParams) {
-            run(initParams[0], activeFormData, {
-              allFormData: _allFormData,
-              type,
-            });
-            return;
-          }
+            // has defaultParams
+            if (initParams) {
+              run(initParams[0], activeFormData, {
+                allFormData: _allFormData,
+                type,
+              });
+              return;
+            }
 
-          run(
-            {
-              pageSize: options.defaultPageSize || 10,
-              ...((params[0] as PaginatedParams[0] | undefined) || {}), // 防止 manual 情况下，第一次触发 submit，此时没有 params[0]
-              current: 1,
-            },
-            activeFormData,
-            {
-              allFormData: _allFormData,
-              type,
-            },
-          );
-        })
-        .catch((err) => err);
-    });
-  },
-  [getActivetFieldValues, run, params, allFormData, type],
-);
+            run(
+              {
+                pageSize: options.defaultPageSize || 10,
+                ...((params[0] as PaginatedParams[0] | undefined) || {}), // 防止 manual 情况下，第一次触发 submit，此时没有 params[0]
+                current: 1,
+              },
+              activeFormData,
+              {
+                allFormData: _allFormData,
+                type,
+              },
+            );
+          })
+          .catch((err) => err);
+      });
+    },
+    [getActivetFieldValues, run, params, allFormData, type],
+  );
 
   const reset = useCallback(() => {
     if (form) {
