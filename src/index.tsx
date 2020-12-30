@@ -31,6 +31,7 @@ export interface UseAntdTableFormUtils {
   getFieldsValue: (...args: any) => Store;
   resetFields: (...args: any) => void;
   validateFields: Antd3ValidateFields | Antd4ValidateFields;
+
   [key: string]: any;
 }
 
