@@ -34,7 +34,7 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "author": "jiangchengbiao",
+  "author": "myywlc",
   "module": "dist/use-form-table.esm.js",
   "size-limit": [
     {
